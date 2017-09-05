@@ -3,16 +3,20 @@
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
 version: 2
+
+general:
+  branches:
+    only:
+      #- circleci
 jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/android:api-25-alpha
-      
-      # Specify service dependencies here if necessary
+      #- image: circleci/openjdk:8-jdk
+
       # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
+            # documented at https://circleci.com/docs/2.0/circleci-images/
+      - image: circleci/android:api-25-alpha
 
     working_directory: ~/repo
 
@@ -20,7 +24,9 @@ jobs:
       # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-    
+#      KEYSTORE: ${CIRCLE_WORKING_DIRECTORY}/sigining.keystore
+#      PUBLISHER_ACCT_JSON_FILE: ${CIRCLE_WORKING_DIRECTORY}/publisher_profile.json
+
     steps:
       - checkout
 
@@ -31,15 +37,16 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: gradle dependencies
+      - run: ./gradlew dependencies
 
       - save_cache:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "build.gradle" }}
-        
-      # run tests!
-      - run: gradle test
 
+      # build release
+      - run: ./gradlew assembleRelease
 
-
+      - store_artifacts:
+          path: demoapp/build/outputs/apk/
+          destination: apk
