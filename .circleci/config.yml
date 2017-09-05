@@ -18,7 +18,7 @@ jobs:
             # documented at https://circleci.com/docs/2.0/circleci-images/
       - image: circleci/android:api-25-alpha
 
-    working_directory: ~/repo
+    working_directory: ~/testcircleci-android
 
     environment:
       # Customize the JVM maximum heap limit
@@ -52,5 +52,5 @@ jobs:
       - run: ./gradlew assembleRelease
 
       - store_artifacts:
-          path: testcircleci-android/build/outputs/apk/
+          path: app/build/outputs/apk/
           destination: apk
