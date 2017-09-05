@@ -52,5 +52,5 @@ jobs:
       - run: ./gradlew assembleRelease
 
       - store_artifacts:
-          path: demoapp/build/outputs/apk/
+          path: testcircleci-android/build/outputs/apk/
           destination: apk
