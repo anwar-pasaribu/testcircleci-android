@@ -49,7 +49,7 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # build release
-      - run: ./gradlew assembleRelease
+      - run: ./gradlew assembleRelease --stacktrace --debug
 
       - store_artifacts:
           path: app/build/outputs/apk/
